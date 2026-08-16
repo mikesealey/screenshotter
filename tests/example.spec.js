@@ -1,19 +1,14 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+import {test, expect} from "@playwright/test"
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+const url = "https://x.com/PaulSchleifer/status/2088708802501644481?s=46"
+const tweetID = "2088708802501644481"
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('takes screenshot', async ({ page }) => {
+    await page.goto(url)
+    const tweet = page.locator(`article[data-tweet-id="${tweetID}"]`) // Get this from the URL
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+    await expect(tweet).toBeVisible()
+    
+    await tweet.screenshot({ path: `screenshots/${tweetID}.jpg` })
+})
